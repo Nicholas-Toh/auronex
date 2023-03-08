@@ -5,7 +5,7 @@ const port = 3000
 
 app.get('/', async (req, res) => {
     const hash = crypto.createHash('sha256')
-    hash.update('Hello World!')
+    hash.update(`${new Date().getTime()}`)
     res.send(hash.digest('hex'))
 })
 
