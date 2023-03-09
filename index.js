@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const crypto = require('crypto')
+const axios = require('axios')
 const port = 3000
 
 function sleep(ms) {
@@ -20,6 +21,24 @@ app.get('/', async (req, res) => {
 
     // Send hash as hex
     res.send(hash.digest('hex'))
+})
+
+app.get('/test', async (req, res) => {
+    let char = null
+    let hash = null
+
+    // Safeguard
+    let maxIter = 1000;
+
+    // Naive implementation
+    do {
+        const response = await axios.get(`http://localhost:${port}`);
+        hash = response.data;
+        char = hash[hash.length - 1];
+        maxIter--;
+    }
+    while (char % 2 !== 1 && maxIter > 0) // Only allow odd numbers
+    res.send(`Hash: ${hash}, Last Character: ${char}`);
 })
 
 app.listen(port, () => {
