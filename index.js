@@ -14,7 +14,9 @@ app.get('/', async (req, res) => {
 
     // Create hash with current time
     const hash = crypto.createHash('sha256')
-    hash.update(`${new Date().getTime()}`)
+
+    // Add microsecond to seconds to improve randomness
+    hash.update(`${process.hrtime()[1] + (new Date()).getTime() * 1000}`)
 
     // Wait for timer to finish
     await promise;
@@ -24,21 +26,39 @@ app.get('/', async (req, res) => {
 })
 
 app.get('/test', async (req, res) => {
-    let char = null
-    let hash = null
 
     // Safeguard
     let maxIter = 1000;
 
     // Naive implementation
-    do {
-        const response = await axios.get(`http://localhost:${port}`);
-        hash = response.data;
-        char = hash[hash.length - 1];
-        maxIter--;
+    // do {
+    //     const response = await axios.get(`http://localhost:${port}`);
+    //     hash = response.data;
+    //     char = hash[hash.length - 1];
+    //     maxIter--;
+    // }
+    // while (char % 2 !== 1 && maxIter > 0) // Only allow odd numbers
+
+    // async await implementation
+    while (maxIter > 0) {
+        // Start requests simultaneously
+        let promises = []
+        for (let i = 0; i < 10; i++) {
+            promises.push(axios.get(`http://localhost:${port}`));
+        }
+
+        promises = await Promise.all(promises);
+
+        // Check if any of them have a hash with an odd number
+        const hash = promises.map(response => response.data).find((hash) => {
+            return hash[hash.length - 1] % 2 === 1;
+        })
+
+        if (hash) {
+            res.send(`Hash: ${hash}, Last Character: ${hash[hash.length - 1]}`);
+            return;
+        }
     }
-    while (char % 2 !== 1 && maxIter > 0) // Only allow odd numbers
-    res.send(`Hash: ${hash}, Last Character: ${char}`);
 })
 
 app.listen(port, () => {
