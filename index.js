@@ -44,10 +44,11 @@ app.get('/q2', async (req, res) => {
     // res.send(`Hash: ${hash}, Last Character: ${hash[hash.length - 1]}`);
 
     // async await implementation
+    const n = req.query.n ?? 16;
     while (maxIter > 0) {
         // Start requests simultaneously
         let promises = []
-        for (let i = 0; i < 16; i++) {
+        for (let i = 0; i < n; i++) {
             promises.push(axios.get(`http://localhost:${port}/rhm`));
         }
 
