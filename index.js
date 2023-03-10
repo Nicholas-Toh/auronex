@@ -31,6 +31,8 @@ app.get('/test', async (req, res) => {
     let maxIter = 1000;
 
     // Naive implementation
+    // let hash = null;
+    // let char = null;
     // do {
     //     const response = await axios.get(`http://localhost:${port}`);
     //     hash = response.data;
@@ -38,6 +40,8 @@ app.get('/test', async (req, res) => {
     //     maxIter--;
     // }
     // while (char % 2 !== 1 && maxIter > 0) // Only allow odd numbers
+
+    // res.send(`Hash: ${hash}, Last Character: ${hash[hash.length - 1]}`);
 
     // async await implementation
     while (maxIter > 0) {
