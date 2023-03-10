@@ -65,6 +65,31 @@ app.get('/q2', async (req, res) => {
     }
 })
 
+function fizzbuzz(n) {
+    let res = "";
+    for (let i = 1; i <= n; i++) {
+        if (i % 3 === 0 && i % 5 === 0) {
+            res += 'fizzbuzz'
+        }
+        else if (i % 3 === 0) {
+            res += 'fizz'
+        }
+        else if (i % 5 === 0) {
+            res += 'buzz'
+        }
+        else {
+            res += `${i}`;
+        }
+        res += "\n"
+    }
+
+    return res;
+}
+
+app.get('/q1/:n', (req, res) => {
+    res.send(fizzbuzz(req.params.n))
+})
+
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
