@@ -2,7 +2,7 @@
 
 This repository contains the implementations of both Question 1 and 2.
 
-## I1. nstallation
+## Installation
 `npm install`
 
 ## Getting Started
