@@ -9,4 +9,4 @@ scenarios:
   - name: "Load Test"
     flow:
       - get:
-          url: "/test"
+          url: "/q2"

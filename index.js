@@ -8,7 +8,7 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-app.get('/', async (req, res) => {
+app.get('/rhm', async (req, res) => {
     // Start the timer
     const promise = sleep(1000);
 
@@ -25,7 +25,7 @@ app.get('/', async (req, res) => {
     res.send(hash.digest('hex'))
 })
 
-app.get('/test', async (req, res) => {
+app.get('/q2', async (req, res) => {
 
     // Safeguard
     let maxIter = 1000;
@@ -48,7 +48,7 @@ app.get('/test', async (req, res) => {
         // Start requests simultaneously
         let promises = []
         for (let i = 0; i < 10; i++) {
-            promises.push(axios.get(`http://localhost:${port}`));
+            promises.push(axios.get(`http://localhost:${port}/rhm`));
         }
 
         promises = await Promise.all(promises);
